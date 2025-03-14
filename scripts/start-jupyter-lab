@@ -1,0 +1,9 @@
+#!/bin/bash
+
+SCRIPTS_DIR=$(dirname $(readlink -e "$0"))
+ROOT_DIR=$(dirname "$SCRIPTS_DIR")
+NOTEBOOKS_DIR="$ROOT_DIR/notebooks"
+
+mkdir -p "$NOTEBOOKS_DIR"
+
+PYTHONPATH="${ROOT_DIR}:${PYTHONPATH}" uv run jupyter lab "--notebook-dir=$NOTEBOOKS_DIR" "$@"
