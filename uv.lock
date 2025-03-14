@@ -64,6 +64,7 @@ dependencies = [
     { name = "jupyter" },
     { name = "jupyter-ai" },
     { name = "langchain-openai" },
+    { name = "requests" },
 ]
 
 [package.dev-dependencies]
@@ -76,6 +77,7 @@ requires-dist = [
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "jupyter-ai", specifier = ">=2.30.0" },
     { name = "langchain-openai", specifier = ">=0.3.8" },
+    { name = "requests", specifier = ">=2.32.3" },
 ]
 
 [package.metadata.requires-dev]
