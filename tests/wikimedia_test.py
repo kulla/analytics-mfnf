@@ -31,6 +31,14 @@ def test_get_pageviews_success(wikimedia_client):
     assert pageviews[0] == ("20160101", 117)
 
 
+def test_get_pageviews_when_title_contains_question_mark(wikimedia_client):
+    pageviews = wikimedia_client.get_pageviews(
+        "Mathe für Nicht-Freaks: Was ist Mathematik?"
+    )
+
+    assert pageviews[0] == ("20160101", 8)
+
+
 def test_get_current_redirects_success(wikimedia_client):
     redirects = wikimedia_client.get_current_redirects("Mathe für Nicht-Freaks")
 

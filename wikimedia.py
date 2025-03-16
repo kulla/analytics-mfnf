@@ -1,4 +1,5 @@
 import datetime
+from urllib.parse import quote
 from typing import List
 
 import requests
@@ -20,6 +21,7 @@ class WikimediaAPIClient:
         end_date = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime(
             "%Y%m%d"
         )
+        page_title = quote(page_title, safe="")
         api_url = f"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/{self.domain}/all-access/all-agents/{page_title}/daily/{start_date}/{end_date}"
 
         response = self.http_client.get(api_url)
