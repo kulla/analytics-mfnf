@@ -1,3 +1,5 @@
+from typing import List
+
 import requests
 
 
@@ -19,7 +21,7 @@ class WikimediaAPIClient:
 
         raise ValueError(f"No revisions found for '{page_title}'")
 
-    def get_current_redirects(self, page_title: str) -> list:
+    def get_current_redirects(self, page_title: str) -> List[str]:
         query_result = self.query_list_prop("redirects", page_title, rdlimit="max")
 
         return [redirect["title"] for redirect in query_result]
