@@ -86,7 +86,7 @@ def parse_sitemap(sitemap_text):
                         book.sections.append(section)
 
             if section is None:
-                return ValueError(f"Page {page.name} is defined without a section")
+                raise ValueError(f"Page {page.name} is defined without a section")
 
             section.pages.append(page)
 
