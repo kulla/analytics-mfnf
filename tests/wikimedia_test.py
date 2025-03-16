@@ -39,10 +39,10 @@ def test_get_current_redirects_success_no_redirects(wikimedia_client):
     assert redirects == []
 
 
-def test_api_query_success(wikimedia_client):
-    result = wikimedia_client.api_query(prop="info", titles="Mathe für Nicht-Freaks")
+def test_api_query_for_page_success(wikimedia_client):
+    result = wikimedia_client.api_query_for_page("Mathe für Nicht-Freaks", prop="info")
 
-    assert result["pages"]["68442"]["title"] == "Mathe für Nicht-Freaks"
+    assert result["title"] == "Mathe für Nicht-Freaks"
 
 
 def test_api_query_http_error(mocked_wikimedia_client, mock_http_client):

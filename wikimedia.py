@@ -28,7 +28,7 @@ class WikimediaAPIClient:
 
     def api_query_for_page(self, page_title: str, **params) -> dict:
         query_result = self.api_query(titles=page_title, **params)
-        values = query_result.get("pages", {}).values()
+        values = query_result.get("query", {}).get("pages", {}).values()
         if len(values) == 1:
             return next(iter(values))
         raise ValueError(f"Page '{page_title}' not found or multiple pages found")
@@ -40,4 +40,4 @@ class WikimediaAPIClient:
         response = self.http_client.get(api_url, params=api_params)
         response.raise_for_status()
 
-        return response.json()["query"]
+        return response.json()
