@@ -6,8 +6,8 @@ class WikimediaAPIClient:
         self.domain = domain
         self.http_client = http_client
 
-    def api_query(self, action: str, **params) -> dict:
-        params["action"] = action
+    def api_query(self, **params) -> dict:
+        params["action"] = "query"
         params["format"] = "json"
         response = self.http_client.get(
             f"https://{self.domain}/w/api.php", params=params
