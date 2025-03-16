@@ -3,4 +3,4 @@
 SCRIPTS_DIR=$(dirname $(readlink -e "$0"))
 ROOT_DIR=$(dirname "$SCRIPTS_DIR")
 
-cd "$ROOT_DIR" && uv run pytest tests/
+cd "$ROOT_DIR" && uv run python -m pytest tests/
