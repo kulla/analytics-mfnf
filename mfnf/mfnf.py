@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 from wikimedia import WikimediaAPIClient
 from .sitemap import parse_sitemap
@@ -22,6 +23,9 @@ class MFNF:
             page_name = page.name if page is not None else None
 
             for page_title in self.get_page_with_all_redirects(target_title):
+                # Add a small delay to avoid hitting the rate limit
+                time.sleep(0.05)
+
                 pageviews = self.wikimedia_client.get_pageviews(page_title)
 
                 for timestamp, views in pageviews:
