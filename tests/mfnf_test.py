@@ -13,6 +13,22 @@ def test_get_sitemap(mfnf):
     assert len(mfnf.get_sitemap().books) >= 10
 
 
+def test_get_page_with_all_redirects(mfnf):
+    redirects = mfnf.get_page_with_all_redirects("Mathe für Nicht-Freaks")
+
+    assert redirects == {"Mathe für Nicht-Freaks", "MfNF", "Serlo"}
+
+    redirects = mfnf.get_page_with_all_redirects(
+        "Mathe für Nicht-Freaks: Trivialkriterium, Nullfolgenkriterium, Divergenzkriterium"
+    )
+
+    assert redirects == {
+        "Mathe für Nicht-Freaks: Trivialkriterium, Nullfolgenkriterium, Divergenzkriterium",
+        "Mathe für Nicht-Freaks: Reihe: Beispiele",
+        "Mathe für Nicht-Freaks: Trivialkriterium",
+    }
+
+
 def test_get_old_titles(mfnf):
     old_titles = mfnf.get_old_titles(
         "Mathe für Nicht-Freaks: Epsilon-Delta-Kriterium der Stetigkeit"

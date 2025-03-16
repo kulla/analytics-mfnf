@@ -11,6 +11,14 @@ class MFNF:
             self.wikimedia_client.get_wikitext("Mathe für Nicht-Freaks: Sitemap")
         )
 
+    def get_page_with_all_redirects(self, page_title):
+        return_value = {page_title}
+
+        return_value |= set(self.wikimedia_client.get_current_redirects(page_title))
+        return_value |= set(self.get_old_titles(page_title))
+
+        return return_value
+
     def get_old_titles(self, page_title):
         def parse_old_title(comment):
             text_indicator = " verschob die Seite "
