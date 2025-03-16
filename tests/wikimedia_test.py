@@ -19,6 +19,12 @@ def mocked_wikimedia_client(mock_http_client):
     return WikimediaAPIClient(http_client=mock_http_client)
 
 
+def test_get_wikitext_success(wikimedia_client):
+    wikitext = wikimedia_client.get_wikitext("Mathe für Nicht-Freaks: Analysis 1")
+
+    assert wikitext.startswith("{{#invoke:Mathe für Nicht-Freaks/Seite|oben}}")
+
+
 def test_api_query_success(wikimedia_client):
     result = wikimedia_client.api_query(prop="info", titles="Mathe für Nicht-Freaks")
 
