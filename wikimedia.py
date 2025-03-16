@@ -1,10 +1,8 @@
 import requests
 
 
-class WikimediaProject:
-    def __init__(
-        self, domain: str = "de.wikibooks.org", http_client=requests.Session()
-    ):
+class WikimediaAPIClient:
+    def __init__(self, domain="de.wikibooks.org", http_client=requests.Session()):
         self.domain = domain
         self.http_client = http_client
 
