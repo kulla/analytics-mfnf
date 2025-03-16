@@ -8,6 +8,7 @@ dependencies = [
     "jupyter>=1.1.1",
     "jupyter-ai>=2.30.0",
     "langchain-openai>=0.3.8",
+    "pandas>=2.2.3",
     "requests>=2.32.3",
 ]
 

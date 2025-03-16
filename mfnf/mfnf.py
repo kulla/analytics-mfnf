@@ -1,3 +1,5 @@
+import pandas as pd
+
 from wikimedia import WikimediaAPIClient
 from .sitemap import parse_sitemap
 
@@ -5,6 +7,57 @@ from .sitemap import parse_sitemap
 class MFNF:
     def __init__(self, wikimedia_client=WikimediaAPIClient()):
         self.wikimedia_client = wikimedia_client
+
+    def aggregate_pageviews(self):
+        def get_pageview_rows(target_title, book, section, page):
+            book_name = book.name if book is not None else None
+            section_name = section.name if section is not None else None
+            page_name = page.name if page is not None else None
+
+            for page_title in self.get_page_with_all_redirects(target_title):
+                pageviews = self.wikimedia_client.get_pageviews(page_title)
+
+                for timestamp, views in pageviews:
+                    yield (
+                        pd.to_datetime(timestamp),
+                        page_title,
+                        target_title,
+                        book_name,
+                        section_name,
+                        page_name,
+                        views,
+                    )
+
+        def get_rows():
+            project = self.get_sitemap()
+
+            yield from get_pageview_rows(project.href, None, None, None)
+            n = 1
+
+            for book in project.books:
+                yield from get_pageview_rows(book.href, book, None, None)
+
+                n += 1
+                for section in book.sections:
+                    for page in section.pages:
+                        yield from get_pageview_rows(page.href, book, section, page)
+                        n += 1
+
+                        if n > 10:
+                            break
+
+        return pd.DataFrame.from_records(
+            get_rows(),
+            columns=[
+                "timestamp",
+                "page_title",
+                "target_title",
+                "book_name",
+                "section_name",
+                "page_name",
+                "views",
+            ],
+        )
 
     def get_sitemap(self):
         return parse_sitemap(
