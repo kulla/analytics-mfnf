@@ -25,6 +25,10 @@ class WikimediaAPIClient:
         api_url = f"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/{self.domain}/all-access/all-agents/{page_title}/daily/{start_date}/{end_date}"
 
         response = self.http_client.get(api_url)
+
+        if response.status_code == 404:
+            return []
+
         response.raise_for_status()
 
         views = response.json()["items"]
