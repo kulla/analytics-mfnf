@@ -7,30 +7,31 @@ class WikimediaAPIClient:
         self.http_client = http_client
 
     def get_wikitext(self, page_title: str) -> str:
-        query_result = self.api_query(
+        query_result = self.api_query_for_page(
+            page_title,
             prop="revisions",
-            titles=page_title,
             rvprop="content",
             rvslots="main",
         )
-        values = query_result.get("pages", {}).values()
-        if len(values) == 1:
-            page_data = next(iter(values))
-            if "revisions" in page_data:
-                return page_data["revisions"][0]["slots"]["main"]["*"]
+        if "revisions" in query_result:
+            return query_result["revisions"][0]["slots"]["main"]["*"]
 
-        raise ValueError(f"Page '{page_title}' not found or multiple pages found")
+        raise ValueError(f"No revisions found for '{page_title}'")
 
     def get_current_redirects(self, page_title: str) -> list:
-        query_result = self.api_query(
-            prop="redirects", titles=page_title, rdlimit="max"
+        query_result = self.api_query_for_page(
+            page_title, prop="redirects", rdlimit="max"
         )
-        redirects = query_result.get("pages", {}).values()
-        if len(redirects) == 1:
-            page_data = next(iter(redirects))
-            if "redirects" in page_data:
-                return [redirect["title"] for redirect in page_data["redirects"]]
+        if "redirects" in query_result:
+            return [redirect["title"] for redirect in query_result["redirects"]]
         return []
+
+    def api_query_for_page(self, page_title: str, **params) -> dict:
+        query_result = self.api_query(titles=page_title, **params)
+        values = query_result.get("pages", {}).values()
+        if len(values) == 1:
+            return next(iter(values))
+        raise ValueError(f"Page '{page_title}' not found or multiple pages found")
 
     def api_query(self, **params) -> dict:
         api_url = f"https://{self.domain}/w/api.php"
