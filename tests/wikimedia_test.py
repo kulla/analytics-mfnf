@@ -40,9 +40,12 @@ def test_get_current_redirects_success_no_redirects(wikimedia_client):
 
 
 def test_api_query_for_page_success(wikimedia_client):
-    result = wikimedia_client.api_query_for_page("Mathe für Nicht-Freaks", prop="info")
+    result, continue_params = wikimedia_client.query_for_page(
+        "info", "Mathe für Nicht-Freaks"
+    )
 
     assert result["title"] == "Mathe für Nicht-Freaks"
+    assert continue_params is None
 
 
 def test_api_query_http_error(mocked_wikimedia_client, mock_http_client):
@@ -54,4 +57,4 @@ def test_api_query_http_error(mocked_wikimedia_client, mock_http_client):
     mock_http_client.get.return_value = mock_response
 
     with pytest.raises(HTTPError, match="404 Client Error: Not Found for url"):
-        mocked_wikimedia_client.api_query(prop="info", titles="Python")
+        mocked_wikimedia_client.query("info", titles="Python")

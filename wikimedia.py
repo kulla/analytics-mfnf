@@ -7,9 +7,9 @@ class WikimediaAPIClient:
         self.http_client = http_client
 
     def get_wikitext(self, page_title: str) -> str:
-        query_result = self.api_query_for_page(
+        query_result = self.query_prop(
+            "revisions",
             page_title,
-            prop="revisions",
             rvprop="content",
             rvslots="main",
         )
@@ -19,23 +19,37 @@ class WikimediaAPIClient:
         raise ValueError(f"No revisions found for '{page_title}'")
 
     def get_current_redirects(self, page_title: str) -> list:
-        query_result = self.api_query_for_page(
-            page_title, prop="redirects", rdlimit="max"
-        )
-        if "redirects" in query_result:
-            return [redirect["title"] for redirect in query_result["redirects"]]
-        return []
+        query_result = self.query_list_prop("redirects", page_title, rdlimit="max")
 
-    def api_query_for_page(self, page_title: str, **params) -> dict:
-        query_result = self.api_query(titles=page_title, **params)
+        return [redirect["title"] for redirect in query_result]
+
+    def query_list_prop(self, prop, page_title: str, **params):
+        query_result, continue_params = self.query_for_page(prop, page_title, **params)
+        values = query_result.get(prop, [])
+
+        assert isinstance(values, list), f"Expected list, got {type(values)}"
+
+        if continue_params:
+            return values + self.query_list_prop(
+                prop, page_title, **params, **continue_params
+            )
+        return values
+
+    def query_prop(self, prop, page_title: str, **params):
+        query_result, _ = self.query_for_page(prop, page_title, **params)
+
+        return query_result
+
+    def query_for_page(self, prop, page_title: str, **params):
+        query_result = self.query(prop, titles=page_title, **params)
         values = query_result.get("query", {}).get("pages", {}).values()
         if len(values) == 1:
-            return next(iter(values))
+            return next(iter(values)), query_result.get("continue", None)
         raise ValueError(f"Page '{page_title}' not found or multiple pages found")
 
-    def api_query(self, **params) -> dict:
+    def query(self, prop, **params) -> dict:
         api_url = f"https://{self.domain}/w/api.php"
-        api_params = {"action": "query", "format": "json", **params}
+        api_params = {"action": "query", "format": "json", "prop": prop, **params}
 
         response = self.http_client.get(api_url, params=api_params)
         response.raise_for_status()
