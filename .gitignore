@@ -1,3 +1,6 @@
+# Output files
+/output/
+
 # Checkpoint files
 .ipynb_checkpoints/
 
