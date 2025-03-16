@@ -12,6 +12,7 @@ class WikimediaAPIClient:
             page_title,
             rvprop="content",
             rvslots="main",
+            rvlimit=1,
         )
         if "revisions" in query_result:
             return query_result["revisions"][0]["slots"]["main"]["*"]
