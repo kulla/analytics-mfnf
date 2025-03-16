@@ -39,19 +39,13 @@ class MFNF:
             project = self.get_sitemap()
 
             yield from get_pageview_rows(project.href, None, None, None)
-            n = 1
 
             for book in project.books:
                 yield from get_pageview_rows(book.href, book, None, None)
 
-                n += 1
                 for section in book.sections:
                     for page in section.pages:
                         yield from get_pageview_rows(page.href, book, section, page)
-                        n += 1
-
-                        if n > 10:
-                            break
 
         result = pd.DataFrame.from_records(
             get_rows(),
