@@ -46,7 +46,7 @@ class MFNF:
                         if n > 10:
                             break
 
-        return pd.DataFrame.from_records(
+        result = pd.DataFrame.from_records(
             get_rows(),
             columns=[
                 "timestamp",
