@@ -67,7 +67,7 @@ class MFNF:
             ],
         )
 
-        self.cache.set(cache_key, result, expire=60 * 60 * 24)
+        self.cache.set(cache_key, result, expire=60 * 60 * 23)
         return result
 
     def get_sitemap(self):
