@@ -3,6 +3,17 @@
 SCRIPTS_DIR=$(dirname $(readlink -e "$0"))
 ROOT_DIR=$(dirname "$SCRIPTS_DIR")
 NOTEBOOK_DIR="$ROOT_DIR/notebooks"
+
+TYPE="$1"
+
+if [ "$TYPE" != "statistic" ] && [ "$TYPE" != "test" ]; then
+    echo "Usage: create-new-notebook <TYPE> <NOTEBOOK_TITLE>" >&2
+    echo "TYPE must be either 'statistic' or 'test'" >&2
+    exit 1
+fi
+
+shift
+
 NOTEBOOK_TITLE="$@"
 
 YEAR=$(date +%Y)
@@ -14,10 +25,14 @@ DAY=$(date +%d)
 FILENAME=$(echo "$NOTEBOOK_TITLE" | tr '[:upper:]' '[:lower:]' | tr -s ' ' '-' | sed 's/^[ \-]*//;s/[ \-]*$//')
 
 # Define the notebook path
-NOTEBOOK_PATH="$NOTEBOOK_DIR/$YEAR-$MONTH-$DAY-$FILENAME.ipynb"
+if [ "$TYPE" == "statistic" ]; then
+    NOTEBOOK_PATH="$NOTEBOOK_DIR/statistics/$FILENAME.ipynb"
+else
+    NOTEBOOK_PATH="$NOTEBOOK_DIR/tests/$YEAR-$MONTH-$DAY-$FILENAME.ipynb"
+fi
 
 # Create the new jupyter notebook
-cp "$NOTEBOOK_DIR/template.ipynb" "$NOTEBOOK_PATH"
+cp "$NOTEBOOK_DIR/template-$TYPE.ipynb" "$NOTEBOOK_PATH"
 
 # Replace the placeholders in the notebook
 sed -i "s/NOTEBOOK_TITLE/$NOTEBOOK_TITLE/g" "$NOTEBOOK_PATH"
