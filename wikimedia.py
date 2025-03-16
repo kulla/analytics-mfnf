@@ -3,18 +3,30 @@ from urllib.parse import quote
 from typing import List
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 class WikimediaAPIClient:
-    def __init__(self, domain="de.wikibooks.org", http_client=requests.Session()):
+    def __init__(self, domain="de.wikibooks.org", http_client=None):
         self.domain = domain
-        self.http_client = http_client
+        self.http_client = http_client or requests.Session()
 
         self.http_client.headers.update(
             {
                 "User-Agent": f"MFNFBot/0.1 (https://github.com/kulla/analytics-mfnf; github.mail@kulla.me) requests/{requests.__version__}",
             }
         )
+
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=1,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["HEAD", "GET", "OPTIONS"],
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.http_client.mount("https://", adapter)
+        self.http_client.mount("http://", adapter)
 
     def get_pageviews(self, page_title: str):
         start_date = "20160101"
