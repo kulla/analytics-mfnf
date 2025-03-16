@@ -67,9 +67,8 @@ class WikimediaAPIClient:
         assert isinstance(values, list), f"Expected list, got {type(values)}"
 
         if continue_params:
-            return values + self.query_list_prop(
-                prop, page_title, **params, **continue_params
-            )
+            new_params = {**params, **continue_params}
+            return values + self.query_list_prop(prop, page_title, **new_params)
         return values
 
     def query_prop(self, prop, page_title: str, **params):
