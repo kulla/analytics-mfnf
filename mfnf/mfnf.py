@@ -1,14 +1,21 @@
 import pandas as pd
-
 from wikimedia import WikimediaAPIClient
 from .sitemap import parse_sitemap
+from diskcache import Cache
 
 
 class MFNF:
     def __init__(self, wikimedia_client=WikimediaAPIClient()):
         self.wikimedia_client = wikimedia_client
+        self.cache = Cache("/tmp/mfnf_cache")
 
     def aggregate_pageviews(self):
+        cache_key = "aggregate_pageviews"
+        cached_result = self.cache.get(cache_key)
+
+        if cached_result is not None:
+            return cached_result
+
         def get_pageview_rows(target_title, book, section, page):
             book_name = book.name if book is not None else None
             section_name = section.name if section is not None else None
@@ -58,6 +65,9 @@ class MFNF:
                 "views",
             ],
         )
+
+        self.cache.set(cache_key, result, expire=60 * 60 * 24)
+        return result
 
     def get_sitemap(self):
         return parse_sitemap(
