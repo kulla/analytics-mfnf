@@ -7,6 +7,13 @@ on:
   merge_group:
 
 jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: ./scripts/check-format
+
   test:
     runs-on: ubuntu-latest
     steps:
