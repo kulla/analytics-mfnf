@@ -27,7 +27,7 @@ class WikimediaAPIClient:
 
         views = response.json()["items"]
 
-        return [(item["timestamp"], item["views"]) for item in views]
+        return [(item["timestamp"][:8], item["views"]) for item in views]
 
     def get_wikitext(self, page_title: str) -> str:
         query_result = self.query_prop(

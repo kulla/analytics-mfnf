@@ -28,7 +28,7 @@ def test_get_wikitext_success(wikimedia_client):
 def test_get_pageviews_success(wikimedia_client):
     pageviews = wikimedia_client.get_pageviews("Mathe für Nicht-Freaks")
 
-    assert pageviews[0] == ("2016010100", 117)
+    assert pageviews[0] == ("20160101", 117)
 
 
 def test_get_current_redirects_success(wikimedia_client):
