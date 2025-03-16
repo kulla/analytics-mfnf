@@ -25,6 +25,20 @@ def test_get_wikitext_success(wikimedia_client):
     assert wikitext.startswith("{{#invoke:Mathe für Nicht-Freaks/Seite|oben}}")
 
 
+def test_get_current_redirects_success(wikimedia_client):
+    redirects = wikimedia_client.get_current_redirects("Mathe für Nicht-Freaks")
+
+    assert redirects == ["MfNF", "Serlo"]
+
+
+def test_get_current_redirects_success_no_redirects(wikimedia_client):
+    redirects = wikimedia_client.get_current_redirects(
+        "Mathe für Nicht-Freaks: Analysis 1"
+    )
+
+    assert redirects == []
+
+
 def test_api_query_success(wikimedia_client):
     result = wikimedia_client.api_query(prop="info", titles="Mathe für Nicht-Freaks")
 

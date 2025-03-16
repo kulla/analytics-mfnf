@@ -21,6 +21,17 @@ class WikimediaAPIClient:
 
         raise ValueError(f"Page '{page_title}' not found or multiple pages found")
 
+    def get_current_redirects(self, page_title: str) -> list:
+        query_result = self.api_query(
+            prop="redirects", titles=page_title, rdlimit="max"
+        )
+        redirects = query_result.get("pages", {}).values()
+        if len(redirects) == 1:
+            page_data = next(iter(redirects))
+            if "redirects" in page_data:
+                return [redirect["title"] for redirect in page_data["redirects"]]
+        return []
+
     def api_query(self, **params) -> dict:
         api_url = f"https://{self.domain}/w/api.php"
         api_params = {"action": "query", "format": "json", **params}
