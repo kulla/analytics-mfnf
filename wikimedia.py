@@ -13,11 +13,13 @@ class WikimediaAPIClient:
             rvprop="content",
             rvslots="main",
         )
-        for _page_id, page_data in query_result.get("pages", {}).items():
+        values = query_result.get("pages", {}).values()
+        if len(values) == 1:
+            page_data = next(iter(values))
             if "revisions" in page_data:
                 return page_data["revisions"][0]["slots"]["main"]["*"]
 
-        raise ValueError(f"Page '{page_title}' not found")
+        raise ValueError(f"Page '{page_title}' not found or multiple pages found")
 
     def api_query(self, **params) -> dict:
         api_url = f"https://{self.domain}/w/api.php"
