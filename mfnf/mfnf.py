@@ -45,6 +45,9 @@ class MFNF:
 
                 for section in book.sections:
                     for page in section.pages:
+                        if page.href.startswith("c:File:"):
+                            continue
+
                         yield from get_pageview_rows(page.href, book, section, page)
 
         result = pd.DataFrame.from_records(
