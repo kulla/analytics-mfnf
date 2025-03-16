@@ -25,6 +25,12 @@ def test_get_wikitext_success(wikimedia_client):
     assert wikitext.startswith("{{#invoke:Mathe für Nicht-Freaks/Seite|oben}}")
 
 
+def test_get_pageviews_success(wikimedia_client):
+    pageviews = wikimedia_client.get_pageviews("Mathe für Nicht-Freaks")
+
+    assert pageviews[0] == ("2016010100", 117)
+
+
 def test_get_current_redirects_success(wikimedia_client):
     redirects = wikimedia_client.get_current_redirects("Mathe für Nicht-Freaks")
 
