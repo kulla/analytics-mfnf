@@ -11,6 +11,8 @@ rm -f "$BUILD_DIR"/*.html
 INDEX_HTML='<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pageview analytics for “Mathe für Nicht-Freaks“</title>
 </head>
 <body>
