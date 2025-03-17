@@ -14,6 +14,7 @@ INDEX_HTML='<!DOCTYPE html>
   <title>Pageview analytics for “Mathe für Nicht-Freaks“</title>
 </head>
 <body>
+<h1>Pageview analytics for “Mathe für Nicht-Freaks“</h1>
 <ul>'
 
 for JUPYTER_NOTEBOOK in $(ls "$NOTEBOOKS_DIR"/*.ipynb); do
