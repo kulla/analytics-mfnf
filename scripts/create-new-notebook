@@ -6,9 +6,9 @@ NOTEBOOK_DIR="$ROOT_DIR/notebooks"
 
 TYPE="$1"
 
-if [ "$TYPE" != "statistic" ] && [ "$TYPE" != "test" ]; then
+if [ "$TYPE" != "statistic" ] && [ "$TYPE" != "report" ]; then
     echo "Usage: create-new-notebook <TYPE> <NOTEBOOK_TITLE>" >&2
-    echo "TYPE must be either 'statistic' or 'test'" >&2
+    echo "TYPE must be either 'statistic' or 'report'" >&2
     exit 1
 fi
 
@@ -28,7 +28,7 @@ FILENAME=$(echo "$NOTEBOOK_TITLE" | tr '[:upper:]' '[:lower:]' | tr -s ' ' '-' |
 if [ "$TYPE" == "statistic" ]; then
     NOTEBOOK_PATH="$NOTEBOOK_DIR/statistics/$FILENAME.ipynb"
 else
-    NOTEBOOK_PATH="$NOTEBOOK_DIR/tests/$YEAR-$MONTH-$DAY-$FILENAME.ipynb"
+    NOTEBOOK_PATH="$NOTEBOOK_DIR/reports/$YEAR-$MONTH-$DAY-$FILENAME.ipynb"
 fi
 
 # Create the new jupyter notebook

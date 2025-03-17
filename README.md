@@ -19,6 +19,6 @@ The scripts in the [`scripts`](./scripts) folder help in creating new statistics
 - `./scripts/build`: Generate the pageview statistics
 - `./scripts/format`: Format all Python files and fix some lint errors
 - `./scripts/start-jupyter-lab`: Start a Jupyter Lab server
-- `./scripts/create-new-notebook <Type> <Notebook title>`: Create a new Jupyter Notebook from a template. The type can be `statistic` or `test`.
+- `./scripts/create-new-notebook <Type> <Notebook title>`: Create a new Jupyter Notebook from a template. The type can be `statistic` or `report`.
 - `./scripts/test`: Run all tests with `pytest`
 - `./scripts/test-watch-mode`: Run all tests in watch mode
