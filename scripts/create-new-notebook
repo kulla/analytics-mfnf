@@ -32,7 +32,7 @@ else
 fi
 
 # Create the new jupyter notebook
-cp "$NOTEBOOK_DIR/template-$TYPE.ipynb" "$NOTEBOOK_PATH"
+cp "$NOTEBOOK_DIR/template.ipynb" "$NOTEBOOK_PATH"
 
 # Replace the placeholders in the notebook
 sed -i "s/NOTEBOOK_TITLE/$NOTEBOOK_TITLE/g" "$NOTEBOOK_PATH"
