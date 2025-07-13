@@ -41,7 +41,7 @@ def test_get_pageviews_when_title_contains_question_mark(wikimedia_client):
 
 def test_get_pageviews_when_no_data_is_available(wikimedia_client):
     pageviews = wikimedia_client.get_pageviews(
-        "Mathe für Nicht-Freaks: Reelle Zahlen: Körperaxiome"
+        "Mathe für Nicht-Freaks: Reelle Zahlen: Körperaxiome 2"
     )
 
     assert pageviews == []
