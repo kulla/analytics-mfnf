@@ -7,11 +7,22 @@ on:
   merge_group:
 
 jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version-file: .tool-versions
+      - run: uv audit
+
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
+        with:
+          version-file: .tool-versions
       - run: ./scripts/check-code
 
   format:
@@ -19,6 +30,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
+        with:
+          version-file: .tool-versions
       - run: ./scripts/check-format
 
   test:
@@ -26,4 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
+        with:
+          version-file: .tool-versions
       - run: ./scripts/test
